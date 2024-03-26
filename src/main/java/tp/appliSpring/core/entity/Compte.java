@@ -44,8 +44,12 @@ public class Compte {
 
 
 	public Compte(Long numero, String label, Double solde) {
-		super();
 		this.numero = numero;
+		this.label = label;
+		this.solde = solde;
+	}
+
+	public Compte(String label, Double solde) {
 		this.label = label;
 		this.solde = solde;
 	}
