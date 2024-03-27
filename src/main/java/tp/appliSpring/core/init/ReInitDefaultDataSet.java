@@ -35,8 +35,9 @@ public class ReInitDefaultDataSet {
 		
 	    serviceCompte.sauvegarderCompte(new Compte(null,"compteB",200.0));
 	    serviceCompte.sauvegarderCompte(new Compte(null,"compteC",20.0));
-	    serviceCompte.sauvegarderCompte(new Compte(null,"compteD",30.0));
-	
+		serviceCompte.sauvegarderCompte(new Compte(null,"compteD",30.0));
+
+		serviceCompte.sauvegarderCompte(new Compte(null,"DompteE",200.0));
 	}
 
 }

@@ -9,8 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import tp.appliSpring.AppliSpringApplication;
+import tp.appliSpring.core.dao.DaoOperation;
 import tp.appliSpring.core.entity.Compte;
+import tp.appliSpring.core.entity.Operation;
 import tp.appliSpring.core.exception.BankException;
+
+import java.util.Date;
 
 @SpringBootTest(classes = {AppliSpringApplication.class})//reprendre la configuration de la classe principale
 @ActiveProfiles({"dev"})
@@ -20,6 +24,9 @@ class ServiceCompteTest {
 
     @Autowired
     private ServiceCompte serviceCompte;
+
+    @Autowired
+    private DaoOperation daoOperation;
 
     @Test
     void transfererOK() {
@@ -87,6 +94,24 @@ class ServiceCompteTest {
 
     @Test
     void rechercherCompte() {
+        // Phase 1 : créer des comptes et des opérations attachées et tout enregistrer en base
+        Compte compte1 = new Compte("compte1", 1700.0);
+        serviceCompte.sauvegarderCompte(compte1);
+
+        Operation operation1 = new Operation("courses", -30.0, new Date());
+        operation1.setCompte(compte1);
+        daoOperation.save(operation1);
+        Operation operation2 = new Operation("salaire", 1600.0, new Date());
+        operation2.setCompte(compte1);
+        daoOperation.save(operation2);
+
+        // Phase 2 : relire les informations
+        Compte compte1Relu = this.serviceCompte.rechercherCompte(compte1.getNumero());
+        logger.debug("compte1Relu="+compte1Relu);
+        Assertions.assertNotNull(compte1Relu);
+        for (Operation op : compte1Relu.getOperations()) {
+            logger.debug("\t operation="+op);
+        }
     }
 
     @Test

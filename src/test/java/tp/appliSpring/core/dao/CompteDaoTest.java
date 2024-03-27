@@ -20,9 +20,9 @@ import java.util.List;
 //@ExtendWith(SpringExtension.class) //si junit5/jupiter // pas nécessaire en spring-boot
 @SpringBootTest(classes = {AppliSpringApplication.class})//reprendre la configuration de la classe principale
 @ActiveProfiles({"dev"})
-public class TestCompteDao {
+public class CompteDaoTest {
 
-    private static Logger logger = LoggerFactory.getLogger(TestCompteDao.class);
+    private static Logger logger = LoggerFactory.getLogger(CompteDaoTest.class);
 
     @Autowired
     private DaoCompte daoCompte;
@@ -121,11 +121,6 @@ public class TestCompteDao {
         operation2.setCompte(compte1);
         daoOperation.save(operation2);
 
-
-
-
-
-
         // Phase 2 : relire les informations
         Compte compte1Relu = this.daoCompte.findWithOperations(compte1.getNumero());
         logger.debug("compte1Relu="+compte1Relu);
@@ -133,7 +128,5 @@ public class TestCompteDao {
         for (Operation op : compte1Relu.getOperations()) {
             logger.debug("\t operation="+op);
         }
-
-
     }
 }
