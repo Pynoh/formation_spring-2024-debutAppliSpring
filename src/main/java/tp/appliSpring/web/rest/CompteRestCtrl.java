@@ -33,7 +33,6 @@ public class CompteRestCtrl {
 	 */
 
 
-
     //V2 avec DTO et V4 (avec automatisme ExceptionHandler)
     //declencher en mode GET avec
     //http://localhost:8181/appliSpring/rest/api-bank/compte/1 ou 2
@@ -69,7 +68,6 @@ public class CompteRestCtrl {
     //http://localhost:8181/appliSpring/rest/api-bank/compte
     //http://localhost:8181/appliSpring/rest/api-bank/compte?soldeMini=50
     //http://localhost:8181/appliSpring/rest/api-bank/compte?soldeMini=50&critere2=val2&critere3=val3
-    //A CODER EN TP
     @GetMapping("")
     public List<CompteDto> getComptesByCriteria(@RequestParam(value = "soldeMini", required = false) Double soldeMini,
                                                 @RequestParam(value = "firstChar", required = false) String firstChar) {
@@ -93,17 +91,36 @@ public class CompteRestCtrl {
     //avec url = http://localhost:8181/appliSpring/rest/api-bank/compte
     //avec dans la partie "body" de la requête
     // { "numero" : null , "label" : "comptequiVaBien" , "solde" : 50.0 }
-    //A CODER EN TP
+    @PostMapping
+    CompteDto postCompte(@RequestBody CompteDto compteDto) {
+        System.out.println("devise to update:" + compteDto);
+        Compte compte = GenericMapper.MAPPER.map(compteDto, Compte.class);
+        serviceCompte.sauvegarderCompte(compte);
+
+        return GenericMapper.MAPPER.map(compte, CompteDto.class);
+    }
+
 
     //appelé en mode PUT
     //avec url = http://localhost:8181/appliSpring/rest/api-bank/compte
     //ou bien avec url = http://localhost:8181/appliSpring/rest/api-bank/compte/1
     //avec dans la partie "body" de la requête
     // { "numero" : 1 , "label" : "libelleModifie" , "solde" : 120.0  }
-    //A CODER EN TP
+    @PutMapping("")
+    CompteDto putCompte(@RequestBody CompteDto compteDto) {
+        System.out.println("devise to update:" + compteDto);
+        Compte compte = GenericMapper.MAPPER.map(compteDto, Compte.class);
+        serviceCompte.updateCompte(compte);
 
+        return GenericMapper.MAPPER.map(compte, CompteDto.class);
+    }
+
+    // appel en mode DELETE
     //http://localhost:8181/appliSpring/rest/api-bank/compte/1 ou 2
-    //A CODER EN TP
+    @DeleteMapping("/{id}")
+    void deleteCompte(@PathVariable("id") long numeroCompte) {
+        serviceCompte.deleteCompte(numeroCompte);
+    }
 
 
     public CompteRestCtrl() {
