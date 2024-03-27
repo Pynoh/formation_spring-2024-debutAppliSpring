@@ -22,7 +22,7 @@ public interface DaoCompte extends JpaRepository<Compte,Long>{
 	*/
 	
 	//code de la requete dans @NamedQuery("Compte.findWithOperations")
-	@Query("select distinct c from Compte c inner join fetch c.operations where c.numero = ?1")
+	@Query("select distinct c from Compte c left join fetch c.operations where c.numero = ?1")
 	Compte findWithOperations(long numCompte);
 	
 	//le code/la requete de cette méthode va être généré automatiquement (sans @NamedQuery)

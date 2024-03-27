@@ -118,7 +118,7 @@ public class TestCompteDao {
         operation1.setCompte(compte1);
         daoOperation.save(operation1);
         Operation operation2 = new Operation("salaire", 1600.0, new Date());
-        operation2.setCompte(compte2);
+        operation2.setCompte(compte1);
         daoOperation.save(operation2);
 
 
