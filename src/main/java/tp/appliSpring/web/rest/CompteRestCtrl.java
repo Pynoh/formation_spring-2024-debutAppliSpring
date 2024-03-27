@@ -1,12 +1,9 @@
 package tp.appliSpring.web.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tp.appliSpring.converter.GenericMapper;
 import tp.appliSpring.core.entity.Compte;
-import tp.appliSpring.core.exception.NotFoundException;
 import tp.appliSpring.core.service.ServiceCompte;
 import tp.appliSpring.dto.CompteDto;
 
@@ -36,7 +33,7 @@ public class CompteRestCtrl {
 	 */
 
 
-    /*
+
     //V2 avec DTO et V4 (avec automatisme ExceptionHandler)
     //declencher en mode GET avec
     //http://localhost:8181/appliSpring/rest/api-bank/compte/1 ou 2
@@ -48,9 +45,10 @@ public class CompteRestCtrl {
         //NB: l'objet retourné sera automatiquement converti au format json
     }
 
-     */
 
 
+
+    /*
     //V3 avec ResponseEntity<?> mais sans ExceptionHandler
     //declencher en mode GET avec
     //http://localhost:8181/appliSpring/rest/api-bank/compte/1 ou 2
@@ -65,7 +63,7 @@ public class CompteRestCtrl {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
+    */
 
     //En GET
     //http://localhost:8181/appliSpring/rest/api-bank/compte
