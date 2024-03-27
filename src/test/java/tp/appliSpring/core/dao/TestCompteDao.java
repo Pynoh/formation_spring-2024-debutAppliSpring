@@ -1,7 +1,6 @@
 package tp.appliSpring.core.dao;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,8 +9,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import tp.appliSpring.AppliSpringApplication;
 import tp.appliSpring.core.entity.Compte;
+import tp.appliSpring.core.entity.Operation;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -24,12 +25,16 @@ public class TestCompteDao {
     private static Logger logger = LoggerFactory.getLogger(TestCompteDao.class);
 
     @Autowired
-    private DaoCompte daoCompte; //à tester
+    private DaoCompte daoCompte;
 
-    @BeforeEach
-    public void before() {
-        this.daoCompte.deleteAll();
-    }
+    @Autowired
+    private DaoOperation daoOperation;
+
+//
+//    @BeforeEach
+//    public void before() {
+//        this.daoCompte.deleteAll();
+//    }
 
 
     @Test
@@ -80,11 +85,55 @@ public class TestCompteDao {
 
         List<Compte> comptesGreaterThan50 = daoCompte.findBySoldeGreaterThanEqual(50);
         Assertions.assertEquals( 2, comptesGreaterThan50.size(), "Le nombre de comptes dans la liste devrait être de 2");
-        logger.debug("comptes avec solde>=50 : " + comptesGreaterThan50);
+        logger.debug("2 comptes avec solde>=50 : " + comptesGreaterThan50);
 
         List<Compte> comptesGreaterThanMinus100 = daoCompte.findBySoldeGreaterThanEqual(-100);
         Assertions.assertEquals( 4, comptesGreaterThanMinus100.size(), "Le nombre de comptes dans la liste devrait être de 4");
-        logger.debug("comptes avec solde>=-100 : " + comptesGreaterThanMinus100);
+        logger.debug("4 comptes avec solde>=-100 : " + comptesGreaterThanMinus100);
     }
 
+
+
+    @Test
+    public void testCompteAvecOperations() {
+        // Phase 1 : créer des comptes et des opérations attachées et tout enregistrer en base
+        Compte compte1 = new Compte("compte1", 1700.0);
+        Compte compte2 = new Compte("compte2", -100.0);
+        Compte compte3 = new Compte("compte3", 50.0);
+        Compte compte4 = new Compte("compte4", 49.9);
+
+        List<Operation> operationsCompte1 = new ArrayList<>();
+        operationsCompte1.add(new Operation("courses", -30.0, new Date()));
+        operationsCompte1.add(new Operation("salaire", 1500.0, new Date()));
+        //compte1.setOperations(operationsCompte1); // Ne crée pas les opérations en BDD
+
+        List<Compte> compteArrayList = new ArrayList<>();
+        compteArrayList.add(compte1);
+        compteArrayList.add(compte2);
+        compteArrayList.add(compte3);
+        compteArrayList.add(compte4);
+        daoCompte.saveAll(compteArrayList);
+
+        Operation operation1 = new Operation("courses", -30.0, new Date());
+        operation1.setCompte(compte1);
+        daoOperation.save(operation1);
+        Operation operation2 = new Operation("salaire", 1600.0, new Date());
+        operation2.setCompte(compte2);
+        daoOperation.save(operation2);
+
+
+
+
+
+
+        // Phase 2 : relire les informations
+        Compte compte1Relu = this.daoCompte.findWithOperations(compte1.getNumero());
+        logger.debug("compte1Relu="+compte1Relu);
+        Assertions.assertNotNull(compte1Relu);
+        for (Operation op : compte1Relu.getOperations()) {
+            logger.debug("\t operation="+op);
+        }
+
+
+    }
 }
