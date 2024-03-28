@@ -1,10 +1,12 @@
 package tp.appliSpring.web.rest;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tp.appliSpring.converter.GenericMapper;
+import tp.appliSpring.converter.MyMapper;
 import tp.appliSpring.core.entity.Compte;
 import tp.appliSpring.core.service.ServiceCompte;
 import tp.appliSpring.dto.CompteDto;
@@ -18,6 +20,9 @@ public class CompteRestCtrl {
 
     @Autowired
     private ServiceCompte serviceCompte;
+
+    @Autowired
+    private MyMapper myMapper;
 
 	/*
 	//V1 sans DTO
@@ -42,7 +47,7 @@ public class CompteRestCtrl {
     public CompteDto getCompteById(@PathVariable("id") long numeroCompte) {
 
         Compte compteEntity = serviceCompte.rechercherCompte(numeroCompte);
-        return GenericMapper.MAPPER.map(compteEntity, CompteDto.class);
+        return myMapper.compteToCompteDto(compteEntity);
         //NB: l'objet retourné sera automatiquement converti au format json
     }
 
@@ -83,7 +88,7 @@ public class CompteRestCtrl {
         if (firstChar != null) {
             compteList = compteList.stream().filter(c -> c.getLabel().startsWith(firstChar)).collect(Collectors.toList());
         }
-        return GenericMapper.MAPPER.map(compteList, CompteDto.class);
+        return myMapper.compteListToCompteDtoList(compteList);
 
         //NB: l'objet retourné sera automatiquement converti au format json
     }
@@ -94,12 +99,12 @@ public class CompteRestCtrl {
     //avec dans la partie "body" de la requête
     // { "numero" : null , "label" : "comptequiVaBien" , "solde" : 50.0 }
     @PostMapping
-    CompteDto postCompte(@RequestBody CompteDto compteDto) {
+    CompteDto postCompte(@Valid @RequestBody CompteDto compteDto) {
         System.out.println("compte to update:" + compteDto);
         Compte compte = GenericMapper.MAPPER.map(compteDto, Compte.class);
         serviceCompte.sauvegarderCompte(compte);
 
-        return GenericMapper.MAPPER.map(compte, CompteDto.class);
+        return myMapper.compteToCompteDto(compte);
     }
 
 
@@ -109,12 +114,12 @@ public class CompteRestCtrl {
     //avec dans la partie "body" de la requête
     // { "numero" : 1 , "label" : "libelleModifie" , "solde" : 120.0  }
     @PutMapping("")
-    CompteDto putCompte(@RequestBody CompteDto compteDto) {
+    CompteDto putCompte(@Valid @RequestBody CompteDto compteDto) {
         System.out.println("devise to update:" + compteDto);
         Compte compte = GenericMapper.MAPPER.map(compteDto, Compte.class);
         serviceCompte.updateCompte(compte);
 
-        return GenericMapper.MAPPER.map(compte, CompteDto.class);
+        return myMapper.compteToCompteDto(compte);
     }
 
     // appel en mode DELETE
