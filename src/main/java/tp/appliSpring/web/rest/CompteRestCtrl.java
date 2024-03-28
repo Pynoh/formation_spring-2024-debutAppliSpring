@@ -1,6 +1,8 @@
 package tp.appliSpring.web.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tp.appliSpring.converter.GenericMapper;
 import tp.appliSpring.core.entity.Compte;
@@ -93,7 +95,7 @@ public class CompteRestCtrl {
     // { "numero" : null , "label" : "comptequiVaBien" , "solde" : 50.0 }
     @PostMapping
     CompteDto postCompte(@RequestBody CompteDto compteDto) {
-        System.out.println("devise to update:" + compteDto);
+        System.out.println("compte to update:" + compteDto);
         Compte compte = GenericMapper.MAPPER.map(compteDto, Compte.class);
         serviceCompte.sauvegarderCompte(compte);
 
@@ -118,8 +120,9 @@ public class CompteRestCtrl {
     // appel en mode DELETE
     //http://localhost:8181/appliSpring/rest/api-bank/compte/1 ou 2
     @DeleteMapping("/{id}")
-    void deleteCompte(@PathVariable("id") long numeroCompte) {
+    public ResponseEntity<?> deleteCompte(@PathVariable("id") long numeroCompte) {
         serviceCompte.deleteCompte(numeroCompte);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 

@@ -26,7 +26,7 @@ public class Compte {
 
     private Double solde;
 
-    @OneToMany(mappedBy = "compte", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "compte", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     //@JsonIgnore
     private List<Operation> operations = new ArrayList<>(); //+get/set
 
