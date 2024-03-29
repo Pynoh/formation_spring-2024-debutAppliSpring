@@ -1,0 +1,15 @@
+.fair-background {
+    background: beige;
+}
+
+.header-and-footer {
+    background-color:navy;
+    width:100%;
+    color:beige;
+    padding: 10px;
+}
+
+.header-sizing {
+    font-size:30px;
+    line-height:48px;
+}

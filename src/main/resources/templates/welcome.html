@@ -1,0 +1,12 @@
+<div xmlns:th="http://www.thymeleaf.org"
+     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+     layout:decorate="~{_layout}" layout:fragment="content">
+    <h1>Welcome Thymeleaf (public part)</h1>
+    <p>message=<b><span th:utext="${message}"></span></b></p>
+    <hr/>
+    <h2>Les pages de mon site</h2>
+    <a th:href="@{/site/app/hello-world-th}">My Hello World page</a> <br/>
+    <a th:href="@{/site/app/to-login}">My login page</a> <br/>
+    <a th:href="@{/site/app/to-compte-list}">Ma liste des comptes</a> <br/>
+    <hr/>
+</div>

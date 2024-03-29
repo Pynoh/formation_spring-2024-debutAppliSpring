@@ -1,0 +1,22 @@
+<div xmlns:th="http://www.thymeleaf.org"
+     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+     layout:decorate="~{_layout}" layout:fragment="content">
+    Ensemble des comptes enregistrés :<br/>
+    <table>
+        <thead>
+        <tr>
+            <th>Numéro</th>
+            <th>Label</th>
+            <th>Solde</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="compte : ${compteList}">
+            <td th:text="${compte.numero}"></td>
+            <td th:text="${compte.label}"></td>
+            <td th:text="${compte.solde}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <hr/>
+</div>
